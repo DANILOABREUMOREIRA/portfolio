@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Danilo Abreu - Portfólio AI Builder</title>
+<meta name="description" content="Portfólio de Danilo Abreu: projetos construídos com IA (app mobile, recuperação de bancos de dados, dashboard em Power BI e orquestração de agentes).">
+<style>
+  :root { --bg:#f6faf9; --card:#fff; --ink:#2b2b2b; --muted:#6b7280; --dark:#12343b; --accent:#2a9d8f; --line:#cfe3e0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0c1d21; --card:#12343b; --ink:#e8f1f0; --muted:#9db5b3; --dark:#e8f1f0; --line:#1f4a52; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif; font-size:17px; line-height:1.55; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 16px; }
+  header { background:#12343b; color:#fff; padding:48px 0 36px; }
+  h1 { margin:0; font-size:clamp(30px,6vw,46px); letter-spacing:1px; line-height:1.1; }
+  .sub { color:#9fd8d0; font-weight:700; margin-top:6px; }
+  .intro { max-width:640px; margin:16px 0 0; color:#dfeeee; }
+  .contato { margin-top:16px; font-size:15px; }
+  .contato a { color:#9fd8d0; }
+  main { padding:32px 0 8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); gap:20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:6px; padding:20px 22px; }
+  .card h2 { margin:0 0 6px; font-size:21px; color:var(--dark); line-height:1.2; }
+  .lbl { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); font-weight:700; margin-top:14px; }
+  .card p { margin:2px 0 0; }
+  .res { font-weight:700; }
+  .stack { margin-top:16px; padding-top:10px; border-top:1px dashed var(--line); font-size:14px; color:var(--muted); }
+  footer { padding:28px 0 40px; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>DANILO ABREU</h1>
+    <div class="sub">Portfólio · AI Builder</div>
+    <p class="intro">Construo com IA para resolver problemas reais do meu dia a dia no suporte. Abaixo, quatro projetos: o que era o problema, o que construí e o que mudou.</p>
+    <div class="contato">Contato: <a href="mailto:daniloabreumoreira@gmail.com">daniloabreumoreira@gmail.com</a></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <article class="card">
+      <h2>App "Quanto Tá?"</h2>
+      <div class="lbl">Problema</div>
+      <p>O mesmo produto custa preços diferentes em cada mercado, e o consumidor não tem como comparar.</p>
+      <div class="lbl">O que construí</div>
+      <p>App mobile que lê o QR Code da nota fiscal (NFC-e), extrai produtos e preços da SEFAZ e compara mercados, monta lista de compras e calcula o custo de pratos. Aceita também foto, XML, link e notas em lote. Funciona offline e sincroniza depois.</p>
+      <div class="lbl">Resultado</div>
+      <p class="res">App completo, feito do zero com Claude Code e testado no celular. Banco com acesso por linha (RLS) e CPF guardado apenas como hash.</p>
+      <div class="stack">Claude Code · React Native / Expo · Supabase · PostgreSQL</div>
+    </article>
+
+    <article class="card">
+      <h2>Descorruptor de Banco de Dados</h2>
+      <div class="lbl">Problema</div>
+      <p>Bancos de clientes corrompidos travavam a operação e podiam gerar multas da SEFAZ. A recuperação dependia de investigação manual.</p>
+      <div class="lbl">O que construí</div>
+      <p>Programa que analisa o banco com apoio de IA, identifica o que está corrompido e conduz a recuperação.</p>
+      <div class="lbl">Resultado</div>
+      <p class="res">Já evitou possíveis multas da SEFAZ, com economia de dezenas de milhares de reais para clientes reais.</p>
+      <div class="stack">IA para análise de dados · bancos de dados</div>
+    </article>
+
+    <article class="card">
+      <h2>Dashboard de gestão do suporte</h2>
+      <div class="lbl">Problema</div>
+      <p>Os dados de atendimento estavam espalhados e a gestão não enxergava a operação do suporte.</p>
+      <div class="lbl">O que construí</div>
+      <p>Dashboard completo em Power BI que centraliza pesquisa de satisfação (satisfeito, insatisfeito, não respondido), assunto dos tickets, metas dos agentes e alerta de quem está perto da meta.</p>
+      <div class="lbl">Resultado</div>
+      <p class="res">Alimenta os relatórios estratégicos que a alta gestão usa para acompanhar o suporte.</p>
+      <div class="stack">Power BI · modelagem de dados · indicadores</div>
+    </article>
+
+    <article class="card">
+      <h2>Orquestração de IA</h2>
+      <div class="lbl">Problema</div>
+      <p>Usar o modelo mais caro para toda tarefa gasta tokens e limite à toa.</p>
+      <div class="lbl">O que construí</div>
+      <p>Sistema com hooks, subagentes e MCP no Claude Code. O Laya, um classificador que roda na minha GPU, faz a triagem de erros e roteia as tarefas por custo entre Claude e Gemini.</p>
+      <div class="lbl">Resultado</div>
+      <p class="res">Resposta em cerca de 40 ms por chamada, menos tokens gastos e uso do modelo mais forte só onde ele decide.</p>
+      <div class="stack">Claude Code · Hooks · MCP · Gemini · Python / PyTorch</div>
+    </article>
+
+  </div>
+</main>
+
+<footer class="wrap">Projetos de trabalho são descritos sem dados de clientes. Demonstração ao vivo de qualquer um deles na entrevista.</footer>
+</body>
+</html>
