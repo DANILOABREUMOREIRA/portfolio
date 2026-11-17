@@ -124,11 +124,6 @@
       <a class="btn" href="mailto:daniloabreumoreira@gmail.com">Enviar e-mail</a>
       <a class="btn" href="https://github.com/DANILOABREUMOREIRA" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <div class="stats">
-      <div class="stat"><b>Dezenas de milhares</b><span>de reais em multas da SEFAZ evitadas para clientes reais</span></div>
-      <div class="stat"><b>Até 20 GB</b><span>por banco de dados recuperado, direto no navegador</span></div>
-      <div class="stat"><b class="mono">~40 ms</b><span>por decisão do modelo local que roteia tarefas</span></div>
-    </div>
   </div>
 </header>
 
@@ -142,7 +137,7 @@
       <div class="num mono">01</div>
       <div>
         <h3>Descorruptor de Banco de Dados</h3>
-        <p class="tag">Recupera bancos MySQL corrompidos de clientes, com IA na análise, e já evitou multas da SEFAZ.</p>
+        <p class="tag">Recupera bancos de dados MySQL corrompidos de clientes, com IA na análise.</p>
         <div class="flow mono">
           <span class="node">pasta data / .zip</span><span class="arrow">→</span>
           <span class="node hi">recuperação InnoDB</span><span class="arrow">→</span>
@@ -151,7 +146,7 @@
         <div class="cols">
           <div><h4>Problema</h4><p>Bancos de clientes corrompidos travavam a operação e podiam gerar multas da SEFAZ. A recuperação dependia de investigação manual.</p></div>
           <div><h4>O que construí</h4><p>Um programa de desktop e uma versão que roda 100% no navegador (Python via Pyodide): o usuário solta a pasta do banco e recebe o .sql. Nada é enviado para a internet.</p></div>
-          <div class="res"><h4>Resultado</h4><p>Economia de dezenas de milhares de reais para clientes reais, evitando possíveis multas da SEFAZ.</p></div>
+          <div class="res"><h4>Resultado</h4><p>Em uso no suporte para recuperar os bancos de clientes e evitar problemas com a SEFAZ.</p></div>
         </div>
         <div class="chips">
           <span class="chip">Python</span><span class="chip">Pyodide</span><span class="chip">MySQL / InnoDB</span><span class="chip">IA para análise</span>
@@ -218,7 +213,7 @@
         <div class="cols">
           <div><h4>Problema</h4><p>Usar o modelo mais caro para toda tarefa gasta tokens e limite à toa.</p></div>
           <div><h4>O que construí</h4><p>Hooks, subagentes e MCP no Claude Code. O Laya, um classificador que roda na minha GPU, faz a triagem de erros e roteia as tarefas por custo entre Claude e Gemini.</p></div>
-          <div class="res"><h4>Resultado</h4><p>Decisão em cerca de 40 ms, menos tokens gastos e o modelo mais forte usado só onde ele decide.</p></div>
+          <div class="res"><h4>Resultado</h4><p>Menos tokens gastos: o modelo mais forte é usado só onde ele realmente precisa decidir.</p></div>
         </div>
         <div class="chips">
           <span class="chip">Claude Code</span><span class="chip">Hooks</span><span class="chip">MCP</span><span class="chip">Gemini</span><span class="chip">Python / PyTorch</span>
