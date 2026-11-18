@@ -10,16 +10,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0b1517; --bg2:#0f1d20; --panel:#12252a; --line:#1e3a40; --ink:#e9f2f1; --muted:#93aeab; --accent:#3dd6c3; --accent2:#2a9d8f;
+    --bg:#0b1517; --bg2:#0f1d20; --panel:#12252a; --line:#1e3a40; --ink:#e9f2f1; --muted:#93aeab; --accent:#3dd6c3; --accent2:#2a9d8f; --warn:#e8896f;
     --glow: rgba(61,214,195,.14);
   }
   @media (prefers-color-scheme: light) {
-    :root { --bg:#f7faf9; --bg2:#eef5f4; --panel:#ffffff; --line:#d3e4e1; --ink:#0f2428; --muted:#4f6b68; --accent:#12806f; --accent2:#12806f; --glow: rgba(18,128,111,.10); }
+    :root { --bg:#f7faf9; --bg2:#eef5f4; --panel:#ffffff; --line:#d3e4e1; --ink:#0f2428; --muted:#4f6b68; --accent:#12806f; --accent2:#12806f; --warn:#c4553c; --glow: rgba(18,128,111,.10); }
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body { margin:0; background:var(--bg); color:var(--ink); font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; }
   a { color:inherit; }
+  button { font:inherit; color:inherit; }
   .wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
   .mono { font-family:"JetBrains Mono",ui-monospace,Consolas,monospace; }
 
@@ -33,44 +34,109 @@
   nav ul a:hover { color:var(--ink); }
 
   /* hero */
-  .hero { padding:96px 0 72px; background:radial-gradient(900px 420px at 80% -10%, var(--glow), transparent 70%); }
+  .hero { padding:96px 0 40px; background:radial-gradient(900px 420px at 80% -10%, var(--glow), transparent 70%); }
   .eyebrow { color:var(--accent); font-size:14px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:22px; }
   h1 { margin:0; font-size:clamp(38px,7vw,74px); line-height:1.04; letter-spacing:-.03em; font-weight:800; max-width:17ch; }
   h1 em { font-style:normal; color:var(--accent); }
-  .lead { max-width:56ch; margin:26px 0 0; color:var(--muted); font-size:clamp(17px,2.2vw,20px); }
   .cta { display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
-  .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; border:1px solid var(--line); transition:transform .2s, border-color .2s, background .2s; }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; border:1px solid var(--line); background:none; cursor:pointer; transition:transform .2s, border-color .2s, background .2s; }
   .btn:hover { transform:translateY(-2px); border-color:var(--accent); }
   .btn.pri { background:var(--accent); border-color:var(--accent); color:#062622; }
-  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:0; margin-top:64px; border-top:1px solid var(--line); }
-  .stat { padding:26px 24px 0 0; }
-  .stat b { display:block; font-size:clamp(26px,3.6vw,38px); letter-spacing:-.02em; line-height:1.1; }
-  .stat span { color:var(--muted); font-size:14px; }
 
-  /* section titles */
-  section { padding:84px 0 0; }
+  section { padding:72px 0 0; }
   .kicker { color:var(--accent); font-size:13px; letter-spacing:.16em; text-transform:uppercase; }
   h2.t { margin:8px 0 0; font-size:clamp(28px,4.4vw,42px); letter-spacing:-.025em; line-height:1.1; }
 
   /* projects */
-  .proj { display:grid; grid-template-columns:90px 1fr; gap:0 20px; padding:44px 0; border-top:1px solid var(--line); }
-  .proj:first-of-type { margin-top:34px; }
-  .num { font-size:15px; color:var(--accent); padding-top:8px; }
+  .proj { display:grid; grid-template-columns:70px 1fr; gap:0 16px; padding:28px 0; }
+  .proj:first-of-type { margin-top:26px; }
+  .num { font-size:15px; color:var(--accent); padding-top:30px; }
+
+  /* flip */
+  .flip { perspective:1600px; }
+  .flipper { display:grid; transform-style:preserve-3d; transition:transform .85s cubic-bezier(.2,.7,.2,1); }
+  .flip.is-flipped .flipper { transform:rotateY(180deg); }
+  .face { grid-area:1/1; backface-visibility:hidden; -webkit-backface-visibility:hidden; border:1px solid var(--line); border-radius:16px; background:var(--panel); padding:28px; }
+  .face.back { transform:rotateY(180deg); display:flex; flex-direction:column; cursor:pointer; }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
   .proj h3 { margin:0; font-size:clamp(24px,3.4vw,34px); letter-spacing:-.02em; line-height:1.15; }
   .tag { color:var(--muted); margin:6px 0 0; max-width:60ch; }
-  .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:26px 0 4px; }
-  .node { padding:7px 13px; border:1px solid var(--line); background:var(--panel); border-radius:8px; font-size:13px; }
+  .flipbtn { display:none; align-items:center; gap:8px; padding:9px 16px; border-radius:999px; border:1px solid var(--accent); color:var(--accent); background:var(--glow); font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; transition:transform .2s, background .2s; }
+  .js .flipbtn { display:inline-flex; }
+  .flipbtn:hover { transform:translateY(-2px); }
+
+  .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:24px 0 4px; }
+  .node { padding:7px 13px; border:1px solid var(--line); background:var(--bg2); border-radius:8px; font-size:13px; }
   .node.hi { border-color:var(--accent); color:var(--accent); background:var(--glow); }
   .arrow { color:var(--accent2); }
-  .cols { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:26px; }
+  .cols { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:24px; }
   .cols h4 { margin:0 0 6px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600; }
   .cols p { margin:0; font-size:15.5px; color:var(--muted); }
   .cols .res p { color:var(--ink); font-weight:600; }
-  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; align-items:center; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; align-items:center; }
   .chip { font-size:12.5px; padding:4px 11px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--muted); }
   .link { margin-left:auto; font-size:14px; color:var(--accent); text-decoration:none; font-weight:600; }
   .link:hover { text-decoration:underline; }
-  .priv { margin-left:auto; font-size:13px; color:var(--muted); }
+
+  /* verso: mini demo */
+  .backhead { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+  .backhead .lbl { color:var(--accent); font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
+  .backhead h3 { font-size:clamp(20px,2.6vw,26px); margin:2px 0 0; }
+  .stage { flex:1; min-height:270px; border:1px solid var(--line); border-radius:12px; background:var(--bg); display:flex; flex-direction:column; overflow:hidden; }
+  .chrome { display:flex; align-items:center; gap:6px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--bg2); }
+  .chrome i { width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .chrome span { margin-left:8px; font-size:12px; color:var(--muted); }
+  .scene { flex:1; display:flex; align-items:center; justify-content:center; padding:22px; }
+  .capbar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:16px; }
+  .cap { font-weight:600; font-size:16px; }
+  .dots { display:flex; gap:8px; }
+  .dots button { width:38px; height:6px; border-radius:99px; background:var(--line); border:0; padding:0; cursor:pointer; position:relative; overflow:hidden; }
+  .dots button.on::after { content:""; position:absolute; inset:0; background:var(--accent); transform-origin:left; animation:prog var(--dur,3.4s) linear forwards; }
+  .dots button.done { background:var(--accent2); }
+  .note { margin:12px 0 0; font-size:12.5px; color:var(--muted); }
+
+  .pop { opacity:0; transform:translateY(8px); animation:pop .5s var(--d,0s) ease forwards; }
+  @keyframes pop { to { opacity:1; transform:none; } }
+  @keyframes prog { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+  @keyframes fill { to { width:var(--w); } }
+  @keyframes scan { from { top:0; } to { top:100%; } }
+
+  .dz { border:2px dashed var(--accent2); border-radius:12px; padding:22px 28px; text-align:center; color:var(--muted); }
+  .file { display:inline-block; margin:6px 5px 0; padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--panel); font-size:13px; }
+  .col { width:100%; max-width:520px; }
+  .row { display:grid; grid-template-columns:120px 1fr 22px; gap:12px; align-items:center; margin:11px 0; font-size:14px; }
+  .track { height:8px; border-radius:99px; background:var(--line); overflow:hidden; }
+  .track i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; animation:fill 1.4s var(--d,0s) ease forwards; }
+  .ok { color:var(--accent); opacity:0; animation:pop .3s calc(var(--d,0s) + 1.3s) forwards; }
+  .sqlfile { display:flex; align-items:center; gap:14px; padding:16px 20px; border:1px solid var(--accent); border-radius:12px; background:var(--glow); }
+  .sqlfile b { font-size:15px; }
+  .lock { margin-top:14px; font-size:13px; color:var(--muted); text-align:center; }
+
+  .phone { width:210px; border:2px solid var(--line); border-radius:24px; padding:16px 14px; background:var(--panel); }
+  .qr { display:grid; grid-template-columns:repeat(11,1fr); gap:2px; width:132px; margin:4px auto; position:relative; }
+  .qr b { aspect-ratio:1; background:var(--ink); border-radius:1px; }
+  .qr b.o { background:transparent; }
+  .scanline { position:absolute; left:-8px; right:-8px; height:3px; background:var(--accent); box-shadow:0 0 12px var(--accent); animation:scan 1.5s ease-in-out infinite alternate; }
+  .item { display:flex; justify-content:space-between; font-size:13px; padding:7px 0; border-bottom:1px solid var(--line); }
+  .mk { display:grid; grid-template-columns:90px 1fr 74px; gap:10px; align-items:center; margin:11px 0; font-size:14px; }
+  .mk .track i { background:var(--muted); }
+  .mk.best .track i { background:var(--accent); }
+  .badge { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:99px; font-size:11px; background:var(--glow); border:1px solid var(--accent); color:var(--accent); }
+
+  .stack3 { display:flex; height:24px; border-radius:99px; overflow:hidden; background:var(--line); }
+  .stack3 i { display:block; height:100%; width:0; animation:fill 1.3s var(--d,0s) ease forwards; }
+  .legend { display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:14px; font-size:13px; color:var(--muted); }
+  .legend s { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; text-decoration:none; }
+  .tk { display:flex; justify-content:space-between; font-size:14px; padding:9px 12px; margin:7px 0; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
+  .tk em { font-style:normal; color:var(--muted); font-size:12.5px; }
+
+  .diag { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .box { padding:10px 16px; border:1px solid var(--line); background:var(--panel); border-radius:10px; font-size:14px; text-align:center; }
+  .box small { display:block; color:var(--muted); font-size:12px; }
+  .box.hi { border-color:var(--accent); color:var(--accent); background:var(--glow); }
+  .outs { display:grid; gap:10px; }
+  .noteCard { text-align:left; min-width:190px; }
+  .noteCard div { font-size:13px; color:var(--muted); padding:2px 0; }
 
   /* about */
   .about { display:grid; grid-template-columns:1.2fr 1fr; gap:48px; margin-top:34px; }
@@ -80,10 +146,8 @@
   .skills h5 { margin:0 0 8px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600; }
   .skills div div { display:flex; flex-wrap:wrap; gap:8px; }
 
-  /* contact */
   .contact { margin:84px 0 0; padding:64px 0 72px; border-top:1px solid var(--line); background:radial-gradient(700px 300px at 20% 110%, var(--glow), transparent 70%); }
   .contact h2 { margin:0; font-size:clamp(30px,5vw,52px); letter-spacing:-.03em; line-height:1.08; max-width:18ch; }
-  .contact p { color:var(--muted); max-width:50ch; margin:16px 0 0; }
   footer { padding:22px 0 34px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px; }
 
   @media (max-width:760px) {
@@ -92,12 +156,17 @@
     .cols { grid-template-columns:1fr; gap:18px; }
     .about { grid-template-columns:1fr; gap:30px; }
     nav ul { gap:16px; font-size:14px; }
-    .link, .priv { margin-left:0; width:100%; }
+    .link { margin-left:0; width:100%; }
     .hero { padding-top:64px; }
+    .face { padding:20px; }
+    .row { grid-template-columns:90px 1fr 20px; }
   }
-  @media (prefers-reduced-motion:no-preference) {
-    .proj, .stat { animation:rise .7s ease both; }
-    @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce) {
+    .flipper { transition:none; }
+    .pop { opacity:1; transform:none; animation:none; }
+    .track i, .stack3 i { width:var(--w); animation:none; }
+    .ok { opacity:1; animation:none; }
+    .scanline { animation:none; top:50%; }
   }
 </style>
 </head>
@@ -134,84 +203,122 @@
 
     <article class="proj">
       <div class="num mono">01</div>
-      <div>
-        <h3>Descorruptor de Banco de Dados</h3>
-        <p class="tag">Recupera bancos de dados MySQL corrompidos de clientes.</p>
-        <div class="flow mono">
-          <span class="node">pasta data / .zip</span><span class="arrow">→</span>
-          <span class="node hi">recuperação InnoDB</span><span class="arrow">→</span>
-          <span class="node">banco_recuperado.sql</span>
-        </div>
-        <div class="cols">
-          <div><h4>Problema</h4><p>Bancos de clientes corrompidos travavam a operação e podiam gerar multas da SEFAZ. A recuperação dependia de investigação manual.</p></div>
-          <div><h4>O que construí</h4><p>Um programa de desktop e uma versão que roda 100% no navegador (Python via Pyodide): o usuário solta a pasta do banco e recebe o .sql. Nada é enviado para a internet.</p></div>
-          <div class="res"><h4>Resultado</h4><p>Em uso no suporte para recuperar os bancos de clientes e evitar problemas com a SEFAZ.</p></div>
-        </div>
-        <div class="chips">
-          <span class="chip">Python</span><span class="chip">Pyodide</span><span class="chip">MySQL / InnoDB</span>
-          <a class="link" href="https://github.com/DANILOABREUMOREIRA/Recuperador-banco-de-dados" target="_blank" rel="noopener">Ver código no GitHub →</a>
+      <div class="flip" data-demo="descorruptor">
+        <div class="flipper">
+          <div class="face front">
+            <div class="head">
+              <div>
+                <h3>Descorruptor de Banco de Dados</h3>
+                <p class="tag">Recupera bancos de dados MySQL corrompidos de clientes.</p>
+              </div>
+              <button class="flipbtn" type="button">▶ Ver como funciona</button>
+            </div>
+            <div class="flow mono">
+              <span class="node">pasta data / .zip</span><span class="arrow">→</span>
+              <span class="node hi">recuperação InnoDB</span><span class="arrow">→</span>
+              <span class="node">banco_recuperado.sql</span>
+            </div>
+            <div class="cols">
+              <div><h4>Problema</h4><p>Bancos de clientes corrompidos travavam a operação e podiam gerar multas da SEFAZ. A recuperação dependia de investigação manual.</p></div>
+              <div><h4>O que construí</h4><p>Um programa de desktop e uma versão que roda 100% no navegador (Python via Pyodide): o usuário solta a pasta do banco e recebe o .sql. Nada é enviado para a internet.</p></div>
+              <div class="res"><h4>Resultado</h4><p>Em uso no suporte para recuperar os bancos de clientes e evitar problemas com a SEFAZ.</p></div>
+            </div>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">Pyodide</span><span class="chip">MySQL / InnoDB</span>
+              <a class="link" href="https://github.com/DANILOABREUMOREIRA/Recuperador-banco-de-dados" target="_blank" rel="noopener">Ver código no GitHub →</a>
+            </div>
+          </div>
         </div>
       </div>
     </article>
 
     <article class="proj">
       <div class="num mono">02</div>
-      <div>
-        <h3>App "Quanto Tá?"</h3>
-        <p class="tag">App mobile que transforma a nota fiscal em comparação de preços entre mercados.</p>
-        <div class="flow mono">
-          <span class="node">QR Code da NFC-e</span><span class="arrow">→</span>
-          <span class="node">portal da SEFAZ</span><span class="arrow">→</span>
-          <span class="node hi">Supabase</span><span class="arrow">→</span>
-          <span class="node">preços por mercado</span>
+      <div class="flip" data-demo="quanto">
+        <div class="flipper">
+          <div class="face front">
+            <div class="head">
+              <div>
+                <h3>App "Quanto Tá?"</h3>
+                <p class="tag">App mobile que transforma a nota fiscal em comparação de preços entre mercados.</p>
+              </div>
+              <button class="flipbtn" type="button">▶ Ver como funciona</button>
+            </div>
+            <div class="flow mono">
+              <span class="node">QR Code da NFC-e</span><span class="arrow">→</span>
+              <span class="node">portal da SEFAZ</span><span class="arrow">→</span>
+              <span class="node hi">Supabase</span><span class="arrow">→</span>
+              <span class="node">preços por mercado</span>
+            </div>
+            <div class="cols">
+              <div><h4>Problema</h4><p>O mesmo produto custa preços diferentes em cada mercado, e o consumidor não tem como comparar.</p></div>
+              <div><h4>O que construí</h4><p>Lê o QR Code, extrai produtos e preços, compara mercados, monta lista de compras e calcula o custo de pratos.</p></div>
+              <div class="res"><h4>Resultado</h4><p>App completo, feito do zero com Claude Code e testado no celular. O banco tem regras de acesso por usuário, e o CPF é guardado de forma protegida (apenas como hash).</p></div>
+            </div>
+            <div class="chips">
+              <span class="chip">Claude Code</span><span class="chip">React Native / Expo</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span>
+            </div>
+          </div>
         </div>
-        <div class="cols">
-          <div><h4>Problema</h4><p>O mesmo produto custa preços diferentes em cada mercado, e o consumidor não tem como comparar.</p></div>
-          <div><h4>O que construí</h4><p>Lê o QR Code, extrai produtos e preços, compara mercados, monta lista de compras e calcula o custo de pratos.</p></div>
-          <div class="res"><h4>Resultado</h4><p>App completo, feito do zero com Claude Code e testado no celular. O banco tem regras de acesso por usuário, e o CPF é guardado de forma protegida (apenas como hash).</p></div>
-        </div>
-        <div class="chips">
-          <span class="chip">Claude Code</span><span class="chip">React Native / Expo</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span>        </div>
       </div>
     </article>
 
     <article class="proj">
       <div class="num mono">03</div>
-      <div>
-        <h3>Dashboard de gestão do suporte</h3>
-        <p class="tag">Toda a operação de atendimento em um só painel, que alimenta os relatórios da alta gestão.</p>
-        <div class="flow mono">
-          <span class="node">tickets e pesquisas</span><span class="arrow">→</span>
-          <span class="node hi">modelo no Power BI</span><span class="arrow">→</span>
-          <span class="node">painel + relatórios</span>
+      <div class="flip" data-demo="dashboard">
+        <div class="flipper">
+          <div class="face front">
+            <div class="head">
+              <div>
+                <h3>Dashboard de gestão do suporte</h3>
+                <p class="tag">Toda a operação de atendimento em um só painel, que alimenta os relatórios da alta gestão.</p>
+              </div>
+              <button class="flipbtn" type="button">▶ Ver como funciona</button>
+            </div>
+            <div class="flow mono">
+              <span class="node">tickets e pesquisas</span><span class="arrow">→</span>
+              <span class="node hi">modelo no Power BI</span><span class="arrow">→</span>
+              <span class="node">painel + relatórios</span>
+            </div>
+            <div class="cols">
+              <div><h4>Problema</h4><p>Os dados de atendimento estavam espalhados e a gestão não enxergava a operação do suporte.</p></div>
+              <div><h4>O que construí</h4><p>Dashboard completo em Power BI com satisfação (satisfeito, insatisfeito, não respondido), assunto dos tickets, metas dos agentes e alerta de quem está perto da meta.</p></div>
+              <div class="res"><h4>Resultado</h4><p>Alimenta os relatórios estratégicos que a alta gestão usa para acompanhar o suporte.</p></div>
+            </div>
+            <div class="chips">
+              <span class="chip">Power BI</span><span class="chip">Modelagem de dados</span><span class="chip">Indicadores e metas</span>
+            </div>
+          </div>
         </div>
-        <div class="cols">
-          <div><h4>Problema</h4><p>Os dados de atendimento estavam espalhados e a gestão não enxergava a operação do suporte.</p></div>
-          <div><h4>O que construí</h4><p>Dashboard completo em Power BI com satisfação (satisfeito, insatisfeito, não respondido), assunto dos tickets, metas dos agentes e alerta de quem está perto da meta.</p></div>
-          <div class="res"><h4>Resultado</h4><p>Alimenta os relatórios estratégicos que a alta gestão usa para acompanhar o suporte.</p></div>
-        </div>
-        <div class="chips">
-          <span class="chip">Power BI</span><span class="chip">Modelagem de dados</span><span class="chip">Indicadores e metas</span>        </div>
       </div>
     </article>
 
     <article class="proj">
       <div class="num mono">04</div>
-      <div>
-        <h3>Orquestração de IA</h3>
-        <p class="tag">Cada tarefa vai para o modelo certo: o mais barato que resolve, o mais forte só quando precisa.</p>
-        <div class="flow mono">
-          <span class="node">tarefa</span><span class="arrow">→</span>
-          <span class="node hi">Laya (modelo local, GPU)</span><span class="arrow">→</span>
-          <span class="node">Claude</span><span class="arrow">/</span><span class="node">Gemini</span>
-        </div>
-        <div class="cols">
-          <div><h4>Problema</h4><p>Usar o modelo mais caro para toda tarefa gasta tokens e limite à toa, e a IA esquece o contexto do projeto a cada nova conversa.</p></div>
-          <div><h4>O que construí</h4><p>Hooks, subagentes e MCP no Claude Code. O Laya, um classificador que roda na minha GPU, faz a triagem de erros e roteia as tarefas por custo entre Claude e Gemini. Um cofre no Obsidian funciona como segundo cérebro: guarda as decisões e pendências de cada projeto, e um hook o carrega no início de cada sessão para a IA retomar de onde parou.</p></div>
-          <div class="res"><h4>Resultado</h4><p>Menos tokens gastos: o modelo mais forte é usado só onde ele realmente precisa decidir, e o trabalho continua de onde parou, sem recomeçar do zero.</p></div>
-        </div>
-        <div class="chips">
-          <span class="chip">Claude Code</span><span class="chip">Hooks</span><span class="chip">MCP</span><span class="chip">Obsidian</span><span class="chip">Gemini</span><span class="chip">Python / PyTorch</span>
+      <div class="flip" data-demo="orquestracao">
+        <div class="flipper">
+          <div class="face front">
+            <div class="head">
+              <div>
+                <h3>Orquestração de IA</h3>
+                <p class="tag">Cada tarefa vai para o modelo certo: o mais barato que resolve, o mais forte só quando precisa.</p>
+              </div>
+              <button class="flipbtn" type="button">▶ Ver como funciona</button>
+            </div>
+            <div class="flow mono">
+              <span class="node">tarefa</span><span class="arrow">→</span>
+              <span class="node hi">Laya (modelo local, GPU)</span><span class="arrow">→</span>
+              <span class="node">Claude</span><span class="arrow">/</span><span class="node">Gemini</span>
+            </div>
+            <div class="cols">
+              <div><h4>Problema</h4><p>Usar o modelo mais caro para toda tarefa gasta tokens e limite à toa, e a IA esquece o contexto do projeto a cada nova conversa.</p></div>
+              <div><h4>O que construí</h4><p>Hooks, subagentes e MCP no Claude Code. O Laya, um classificador que roda na minha GPU, faz a triagem de erros e roteia as tarefas por custo entre Claude e Gemini. Um cofre no Obsidian funciona como segundo cérebro: guarda as decisões e pendências de cada projeto, e um hook o carrega no início de cada sessão para a IA retomar de onde parou.</p></div>
+              <div class="res"><h4>Resultado</h4><p>Menos tokens gastos: o modelo mais forte é usado só onde ele realmente precisa decidir, e o trabalho continua de onde parou, sem recomeçar do zero.</p></div>
+            </div>
+            <div class="chips">
+              <span class="chip">Claude Code</span><span class="chip">Hooks</span><span class="chip">MCP</span><span class="chip">Obsidian</span><span class="chip">Gemini</span><span class="chip">Python / PyTorch</span>
+            </div>
+          </div>
         </div>
       </div>
     </article>
@@ -243,7 +350,7 @@
     <h2 style="margin-top:8px">Vamos construir algo com IA?</h2>
     <div class="cta">
       <a class="btn pri" href="https://mail.google.com/mail/?view=cm&fs=1&to=daniloabreumoreira@gmail.com&su=Contato%20pelo%20portf%C3%B3lio" target="_blank" rel="noopener">daniloabreumoreira@gmail.com</a>
-      <button class="btn" id="copiar" type="button" style="background:none;color:inherit;font:inherit;font-weight:600;font-size:15px;cursor:pointer">Copiar e-mail</button>
+      <button class="btn" id="copiar" type="button">Copiar e-mail</button>
       <a class="btn" href="https://github.com/DANILOABREUMOREIRA" target="_blank" rel="noopener">github.com/DANILOABREUMOREIRA</a>
     </div>
   </div>
@@ -254,13 +361,145 @@
 </footer>
 
 <script>
-  // Copia o e-mail para quem não usa Gmail no navegador
-  document.getElementById('copiar').addEventListener('click', function () {
-    var b = this, e = 'daniloabreumoreira@gmail.com';
-    var ok = function () { b.textContent = 'Copiado!'; setTimeout(function () { b.textContent = 'Copiar e-mail'; }, 2000); };
-    if (navigator.clipboard) { navigator.clipboard.writeText(e).then(ok, function () { prompt('Copie o e-mail:', e); }); }
-    else { prompt('Copie o e-mail:', e); }
-  });
+document.documentElement.classList.add('js');
+
+// Copia o e-mail para quem não usa Gmail no navegador
+document.getElementById('copiar').addEventListener('click', function () {
+  var b = this, e = 'daniloabreumoreira@gmail.com';
+  var ok = function () { b.textContent = 'Copiado!'; setTimeout(function () { b.textContent = 'Copiar e-mail'; }, 2000); };
+  if (navigator.clipboard) { navigator.clipboard.writeText(e).then(ok, function () { prompt('Copie o e-mail:', e); }); }
+  else { prompt('Copie o e-mail:', e); }
+});
+
+/* ---------- Mini demos (animações ilustrativas, com dados de exemplo) ---------- */
+function qrCells() {
+  var s = 7, out = '';
+  for (var i = 0; i < 121; i++) {
+    var r = Math.floor(i / 11), c = i % 11, on;
+    var corner = (r < 3 && c < 3) || (r < 3 && c > 7) || (r > 7 && c < 3);
+    if (corner) on = true;
+    else { s = (s * 1103515245 + 12345) & 0x7fffffff; on = (s >> 8) % 2 === 0; }
+    out += '<b class="' + (on ? '' : 'o') + '"></b>';
+  }
+  return out;
+}
+
+var DEMOS = {
+  descorruptor: {
+    title: 'Descorruptor de Banco de Dados', win: 'recuperador · no navegador',
+    steps: [
+      { cap: '1. Você solta a pasta do banco (ou um .zip)', html:
+        '<div class="col"><div class="dz pop">Solte aqui a pasta <b>data</b> do MySQL ou um <b>.zip</b></div>' +
+        '<div style="text-align:center" class="mono"><span class="file pop" style="--d:.4s">ibdata1</span><span class="file pop" style="--d:.7s">clientes.ibd</span><span class="file pop" style="--d:1s">produtos.ibd</span></div></div>' },
+      { cap: '2. Ele recupera as tabelas, direto no seu navegador', html:
+        '<div class="col">' +
+        ['clientes', 'produtos', 'notas_fiscais'].map(function (n, i) {
+          return '<div class="row"><span class="mono">' + n + '</span><div class="track"><i style="--w:100%;--d:' + (i * .45) + 's"></i></div><span class="ok" style="--d:' + (i * .45) + 's">✓</span></div>';
+        }).join('') + '</div>' },
+      { cap: '3. Você recebe o banco recuperado em .sql', html:
+        '<div class="col"><div class="sqlfile pop"><span style="font-size:24px">📄</span><div><b class="mono">banco_recuperado.sql</b><div style="color:var(--muted);font-size:13px">pronto para importar no MySQL</div></div></div>' +
+        '<div class="lock pop" style="--d:.5s">🔒 Os arquivos ficam no seu computador. Nada é enviado para a internet.</div></div>' }
+    ]
+  },
+  quanto: {
+    title: 'App "Quanto Tá?"', win: 'Quanto Tá? · app mobile',
+    steps: [
+      { cap: '1. Você escaneia o QR Code da nota fiscal', html:
+        '<div class="phone"><div class="mono" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">Escanear nota</div><div class="qr">' + qrCells() + '<div class="scanline"></div></div></div>' },
+      { cap: '2. O app lê os produtos e os preços da nota', html:
+        '<div class="phone"><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:6px">Nota lida · exemplo</div>' +
+        [['Arroz 5 kg', '24,90'], ['Feijão 1 kg', '8,49'], ['Leite 1 L', '5,19'], ['Café 500 g', '18,75']].map(function (p, i) {
+          return '<div class="item pop" style="--d:' + (i * .35) + 's"><span>' + p[0] + '</span><b>R$ ' + p[1] + '</b></div>';
+        }).join('') + '</div>' },
+      { cap: '3. E compara o preço do mesmo produto entre mercados', html:
+        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:4px">Arroz 5 kg · exemplo</div>' +
+        '<div class="mk"><span>Mercado A</span><div class="track"><i style="--w:100%;--d:0s"></i></div><b>R$ 26,90</b></div>' +
+        '<div class="mk"><span>Mercado B</span><div class="track"><i style="--w:93%;--d:.2s"></i></div><b>R$ 24,90</b></div>' +
+        '<div class="mk best"><span>Mercado C</span><div class="track"><i style="--w:84%;--d:.4s"></i></div><b>R$ 22,50</b></div>' +
+        '<div class="pop" style="--d:1.2s;text-align:right"><span class="badge">menor preço: Mercado C</span></div></div>' }
+    ]
+  },
+  dashboard: {
+    title: 'Dashboard de gestão do suporte', win: 'Power BI · gestão do suporte',
+    steps: [
+      { cap: '1. Reúne os atendimentos num só lugar', html:
+        '<div class="col">' + [['Emissão de nota', 'satisfeito'], ['Erro no banco de dados', 'satisfeito'], ['Dúvida de configuração', 'não respondido'], ['Impressora fiscal', 'insatisfeito']].map(function (t, i) {
+          return '<div class="tk pop" style="--d:' + (i * .35) + 's"><span>' + t[0] + '</span><em>' + t[1] + '</em></div>';
+        }).join('') + '</div>' },
+      { cap: '2. Calcula a satisfação e o assunto dos tickets', html:
+        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:10px">Pesquisa de satisfação · exemplo</div>' +
+        '<div class="stack3"><i style="--w:62%;background:var(--accent)"></i><i style="--w:14%;--d:.5s;background:var(--warn)"></i><i style="--w:24%;--d:.9s;background:var(--muted)"></i></div>' +
+        '<div class="legend"><span><s style="background:var(--accent)"></s>Satisfeito</span><span><s style="background:var(--warn)"></s>Insatisfeito</span><span><s style="background:var(--muted)"></s>Não respondido</span></div></div>' },
+      { cap: '3. Acompanha a meta de cada agente', html:
+        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:4px">Metas dos agentes · exemplo</div>' +
+        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 1</span><div class="track"><i style="--w:96%"></i></div><b>96%</b></div>' +
+        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 2</span><div class="track"><i style="--w:74%;--d:.3s"></i></div><b>74%</b></div>' +
+        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 3</span><div class="track"><i style="--w:45%;--d:.6s"></i></div><b>45%</b></div>' +
+        '<div class="pop" style="--d:1.3s"><span class="badge" style="margin-left:0">Agente 1 está perto da meta</span></div></div>' }
+    ]
+  },
+  orquestracao: {
+    title: 'Orquestração de IA', win: 'Claude Code · hooks e subagentes',
+    steps: [
+      { cap: '1. Começa a sessão: o hook carrega o contexto do Obsidian', html:
+        '<div class="diag"><div class="box noteCard pop"><b class="mono" style="font-size:13px">📓 Obsidian · retomada.md</b><div>Onde paramos</div><div>Decisões do projeto</div><div>Próximo passo</div></div>' +
+        '<span class="arrow pop" style="--d:.5s">→</span><div class="box hi pop" style="--d:.7s">Claude Code<small>retoma de onde parou</small></div></div>' },
+      { cap: '2. Chega uma tarefa e o Laya (modelo local) decide quem faz', html:
+        '<div class="diag"><div class="box pop">Tarefa<small>ex.: resumir um log longo</small></div><span class="arrow pop" style="--d:.4s">→</span>' +
+        '<div class="box hi pop" style="--d:.6s">Laya<small>roda na minha GPU</small></div><span class="arrow pop" style="--d:1s">→</span>' +
+        '<div class="outs"><div class="box pop" style="--d:1.2s;border-color:var(--accent)">Gemini<small>tarefa simples: mais barato</small></div><div class="box pop" style="--d:1.5s">Claude<small>tarefa difícil: modelo forte</small></div></div></div>' },
+      { cap: '3. O modelo certo responde: menos tokens, mesmo resultado', html:
+        '<div class="diag"><div class="box pop">Tarefa simples<small>→ Gemini</small></div><div class="box pop" style="--d:.4s">Tarefa difícil<small>→ Claude</small></div>' +
+        '<span class="arrow pop" style="--d:.9s">→</span><div class="box hi pop" style="--d:1s">Decisões salvas<small>no cofre do Obsidian</small></div></div>' }
+    ]
+  }
+};
+
+function initFlip(el) {
+  var demo = DEMOS[el.getAttribute('data-demo')];
+  var front = el.querySelector('.front'), flipper = el.querySelector('.flipper');
+  var back = document.createElement('div');
+  back.className = 'face back';
+  back.innerHTML =
+    '<div class="backhead"><div><div class="lbl mono">Como funciona</div><h3>' + demo.title + '</h3></div>' +
+    '<button class="flipbtn" type="button" style="display:inline-flex">↩ Ver texto</button></div>' +
+    '<div class="stage"><div class="chrome"><i></i><i></i><i></i><span class="mono">' + demo.win + '</span></div><div class="scene"></div></div>' +
+    '<div class="capbar"><div class="cap"></div><div class="dots"></div></div>' +
+    '<p class="note">Animação ilustrativa, com dados de exemplo. Clique em qualquer lugar para voltar ao texto.</p>';
+  flipper.appendChild(back);
+
+  var scene = back.querySelector('.scene'), cap = back.querySelector('.cap'), dots = back.querySelector('.dots');
+  var DUR = 3600, idx = 0, timer = null;
+
+  function show(i) {
+    idx = i;
+    scene.innerHTML = demo.steps[i].html;
+    cap.textContent = demo.steps[i].cap;
+    dots.innerHTML = '';
+    demo.steps.forEach(function (_, k) {
+      var d = document.createElement('button');
+      d.type = 'button'; d.setAttribute('aria-label', 'Passo ' + (k + 1));
+      d.className = k < i ? 'done' : (k === i ? 'on' : '');
+      d.style.setProperty('--dur', DUR + 'ms');
+      d.addEventListener('click', function (e) { e.stopPropagation(); play(k); });
+      dots.appendChild(d);
+    });
+  }
+  function play(i) { clearTimeout(timer); show(i); timer = setTimeout(function () { play((idx + 1) % demo.steps.length); }, DUR); }
+  function stop() { clearTimeout(timer); }
+
+  function setFlipped(v) {
+    el.classList.toggle('is-flipped', v);
+    front.inert = v; back.inert = !v;
+    front.setAttribute('aria-hidden', String(v)); back.setAttribute('aria-hidden', String(!v));
+    if (v) play(0); else stop();
+  }
+  front.querySelector('.flipbtn').addEventListener('click', function () { setFlipped(true); back.querySelector('.flipbtn').focus({ preventScroll: true }); });
+  back.addEventListener('click', function () { setFlipped(false); front.querySelector('.flipbtn').focus({ preventScroll: true }); });
+  el.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('is-flipped')) setFlipped(false); });
+  setFlipped(false);
+}
+document.querySelectorAll('.flip').forEach(initFlip);
 </script>
 </body>
 </html>
