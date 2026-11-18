@@ -57,7 +57,6 @@
   .flipper { display:grid; transform-style:preserve-3d; transition:transform .85s cubic-bezier(.2,.7,.2,1); }
   .flip.is-flipped .flipper { transform:rotateY(180deg); }
   .face { grid-area:1/1; backface-visibility:hidden; -webkit-backface-visibility:hidden; border:1px solid var(--line); border-radius:16px; background:var(--panel); padding:28px; }
-  .face.back { transform:rotateY(180deg); display:flex; flex-direction:column; cursor:pointer; }
   .head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
   .proj h3 { margin:0; font-size:clamp(24px,3.4vw,34px); letter-spacing:-.02em; line-height:1.15; }
   .tag { color:var(--muted); margin:6px 0 0; max-width:60ch; }
@@ -78,65 +77,128 @@
   .link { margin-left:auto; font-size:14px; color:var(--accent); text-decoration:none; font-weight:600; }
   .link:hover { text-decoration:underline; }
 
-  /* verso: mini demo */
-  .backhead { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
-  .backhead .lbl { color:var(--accent); font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
-  .backhead h3 { font-size:clamp(20px,2.6vw,26px); margin:2px 0 0; }
-  .stage { flex:1; min-height:270px; border:1px solid var(--line); border-radius:12px; background:var(--bg); display:flex; flex-direction:column; overflow:hidden; }
-  .chrome { display:flex; align-items:center; gap:6px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--bg2); }
-  .chrome i { width:9px; height:9px; border-radius:50%; background:var(--line); }
-  .chrome span { margin-left:8px; font-size:12px; color:var(--muted); }
-  .scene { flex:1; display:flex; align-items:center; justify-content:center; padding:22px; }
-  .capbar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:16px; }
-  .cap { font-weight:600; font-size:16px; }
-  .dots { display:flex; gap:8px; }
-  .dots button { width:38px; height:6px; border-radius:99px; background:var(--line); border:0; padding:0; cursor:pointer; position:relative; overflow:hidden; }
-  .dots button.on::after { content:""; position:absolute; inset:0; background:var(--accent); transform-origin:left; animation:prog var(--dur,3.4s) linear forwards; }
-  .dots button.done { background:var(--accent2); }
-  .note { margin:12px 0 0; font-size:12.5px; color:var(--muted); }
+  /* verso = só o vídeo */
+  .face.back { transform:rotateY(180deg); padding:0; overflow:hidden; position:relative; background:var(--bg); }
+  .vbtn { position:absolute; top:14px; right:14px; z-index:60; background:var(--panel); }
+  .vwrap { position:absolute; inset:0; overflow:hidden; }
+  .canvas { position:absolute; left:0; top:0; width:720px; height:440px; transform-origin:0 0; font-size:14px; line-height:1.35; color:var(--ink); opacity:0; transition:opacity .45s ease; }
+  .canvas.vis { opacity:1; }
 
-  .pop { opacity:0; transform:translateY(8px); animation:pop .5s var(--d,0s) ease forwards; }
-  @keyframes pop { to { opacity:1; transform:none; } }
-  @keyframes prog { from { transform:scaleX(0); } to { transform:scaleX(1); } }
-  @keyframes fill { to { width:var(--w); } }
-  @keyframes scan { from { top:0; } to { top:100%; } }
+  /* peças de interface simulada */
+  .win { position:absolute; border:1px solid var(--line); border-radius:12px; background:var(--panel); overflow:hidden; box-shadow:0 12px 34px rgba(0,0,0,.28); }
+  .wbar { height:30px; display:flex; align-items:center; gap:6px; padding:0 12px; background:var(--bg2); border-bottom:1px solid var(--line); }
+  .wbar i { width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .wt { margin-left:8px; font-size:11.5px; color:var(--muted); }
+  .x { transition:opacity .45s ease, transform .45s ease; }
+  .x.off { opacity:0; transform:translateY(8px); pointer-events:none; }
+  .lb { display:block; font-size:12px; color:var(--muted); margin-bottom:5px; }
+  .inp { border:1px solid var(--line); background:var(--bg); border-radius:8px; padding:8px 11px; min-height:38px; display:flex; align-items:center; font-family:"JetBrains Mono",monospace; font-size:13px; }
+  .caret::after { content:""; display:inline-block; width:2px; height:1.05em; background:var(--accent); margin-left:1px; animation:blink 1s steps(2) infinite; vertical-align:middle; }
+  @keyframes blink { 50% { opacity:0; } }
+  .btn2 { display:inline-block; background:var(--accent); color:#062622; font-weight:700; border-radius:8px; padding:8px 18px; font-size:13.5px; }
+  .bar { height:8px; border-radius:99px; background:var(--line); overflow:hidden; }
+  .bar i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .9s linear; }
 
-  .dz { border:2px dashed var(--accent2); border-radius:12px; padding:22px 28px; text-align:center; color:var(--muted); }
-  .file { display:inline-block; margin:6px 5px 0; padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--panel); font-size:13px; }
-  .col { width:100%; max-width:520px; }
-  .row { display:grid; grid-template-columns:120px 1fr 22px; gap:12px; align-items:center; margin:11px 0; font-size:14px; }
-  .track { height:8px; border-radius:99px; background:var(--line); overflow:hidden; }
-  .track i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; animation:fill 1.4s var(--d,0s) ease forwards; }
-  .ok { color:var(--accent); opacity:0; animation:pop .3s calc(var(--d,0s) + 1.3s) forwards; }
-  .sqlfile { display:flex; align-items:center; gap:14px; padding:16px 20px; border:1px solid var(--accent); border-radius:12px; background:var(--glow); }
-  .sqlfile b { font-size:15px; }
-  .lock { margin-top:14px; font-size:13px; color:var(--muted); text-align:center; }
+  .cur { position:absolute; left:0; top:0; width:22px; height:22px; z-index:55; pointer-events:none; transform:translate(700px,430px); transition:transform var(--t,.8s) cubic-bezier(.4,0,.2,1); }
+  .cur svg { width:22px; height:22px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55)); transition:transform .12s; transform-origin:4px 2px; }
+  .cur.press svg { transform:scale(.82); }
+  .cur .dot { display:none; position:absolute; left:-14px; top:-14px; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.55); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.4); transition:transform .12s; }
+  .cur.touch svg { display:none; }
+  .cur.touch .dot { display:block; }
+  .cur.touch.press .dot { transform:scale(.8); }
+  .cur.none { display:none; }
+  .ghost { position:absolute; left:8px; top:10px; padding:5px 10px; border-radius:8px; background:var(--panel); border:1px solid var(--accent); font-size:12px; white-space:nowrap; box-shadow:0 6px 16px rgba(0,0,0,.35); }
+  .rip { position:absolute; width:34px; height:34px; margin:-17px 0 0 -17px; border-radius:50%; border:2px solid var(--accent); pointer-events:none; z-index:54; animation:ripple .6s ease-out forwards; }
+  @keyframes ripple { from { transform:scale(.3); opacity:1; } to { transform:scale(1.7); opacity:0; } }
+  .pk { position:absolute; width:12px; height:12px; margin:-6px 0 0 -6px; border-radius:50%; background:var(--accent); box-shadow:0 0 12px var(--accent); z-index:40; transition:left var(--t,1s) ease-in-out, top var(--t,1s) ease-in-out; }
 
-  .phone { width:210px; border:2px solid var(--line); border-radius:24px; padding:16px 14px; background:var(--panel); }
-  .qr { display:grid; grid-template-columns:repeat(11,1fr); gap:2px; width:132px; margin:4px auto; position:relative; }
-  .qr b { aspect-ratio:1; background:var(--ink); border-radius:1px; }
-  .qr b.o { background:transparent; }
-  .scanline { position:absolute; left:-8px; right:-8px; height:3px; background:var(--accent); box-shadow:0 0 12px var(--accent); animation:scan 1.5s ease-in-out infinite alternate; }
-  .item { display:flex; justify-content:space-between; font-size:13px; padding:7px 0; border-bottom:1px solid var(--line); }
-  .mk { display:grid; grid-template-columns:90px 1fr 74px; gap:10px; align-items:center; margin:11px 0; font-size:14px; }
-  .mk .track i { background:var(--muted); }
-  .mk.best .track i { background:var(--accent); }
-  .badge { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:99px; font-size:11px; background:var(--glow); border:1px solid var(--accent); color:var(--accent); }
+  /* descorruptor */
+  .fi { padding:8px 10px; border-radius:8px; font-size:13.5px; margin:2px 0; transition:opacity .3s, background .3s; }
+  .fi.sel { background:var(--glow); outline:1px solid var(--accent); }
+  .fi.drag { opacity:.35; }
+  .dz2 { height:128px; border:2px dashed var(--accent2); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; color:var(--muted); padding:0 20px; transition:background .3s, border-color .3s; }
+  .dz2.over { background:var(--glow); border-color:var(--accent); }
+  .dz2.ok { background:var(--glow); border-style:solid; border-color:var(--accent); color:var(--ink); }
+  .tr { display:grid; grid-template-columns:118px 1fr 92px; gap:12px; align-items:center; margin:12px 0; font-size:13px; }
+  .tr .st { color:var(--muted); font-size:12px; text-align:right; }
+  .tr.done .st { color:var(--accent); font-weight:700; }
+  .pc { display:flex; justify-content:space-between; font-size:12.5px; color:var(--muted); margin:8px 0 6px; }
+  .sqlf { display:flex; align-items:center; gap:14px; padding:14px 18px; margin:16px 0; border:1px solid var(--accent); border-radius:12px; background:var(--glow); }
+  .sqlf small { display:block; color:var(--muted); font-size:12px; }
+  .okb { color:var(--accent); font-weight:700; font-size:16px; }
+  .toast { position:absolute; left:50%; bottom:46px; transform:translateX(-50%); background:var(--accent); color:#062622; font-weight:700; padding:8px 16px; border-radius:99px; font-size:13px; }
+  .toast.off { transform:translate(-50%,8px); }
+  .foot { position:absolute; left:0; right:0; bottom:0; padding:9px 16px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); background:var(--bg2); }
 
-  .stack3 { display:flex; height:24px; border-radius:99px; overflow:hidden; background:var(--line); }
-  .stack3 i { display:block; height:100%; width:0; animation:fill 1.3s var(--d,0s) ease forwards; }
-  .legend { display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:14px; font-size:13px; color:var(--muted); }
-  .legend s { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; text-decoration:none; }
-  .tk { display:flex; justify-content:space-between; font-size:14px; padding:9px 12px; margin:7px 0; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
-  .tk em { font-style:normal; color:var(--muted); font-size:12.5px; }
+  /* quanto tá */
+  .rcp { position:absolute; left:50px; top:100px; width:150px; height:240px; background:#f4f4ef; color:#222; border-radius:6px; padding:12px 12px; font-family:"JetBrains Mono",monospace; font-size:9.5px; line-height:1.5; box-shadow:0 10px 28px rgba(0,0,0,.35); z-index:30; transition:left 1.4s cubic-bezier(.4,0,.2,1), top 1.4s cubic-bezier(.4,0,.2,1), transform 1.4s cubic-bezier(.4,0,.2,1), opacity .5s; }
+  .rcp.go { left:285px; top:95px; transform:scale(.58); }
+  .rcp.away { opacity:0; }
+  .rcp hr { border:0; border-top:1px dashed #999; margin:5px 0; }
+  .rcp .q { display:grid; grid-template-columns:repeat(11,1fr); gap:1px; width:78px; margin:8px auto 0; }
+  .rcp .q b { aspect-ratio:1; background:#111; }
+  .rcp .q b.o { background:transparent; }
+  .phone2 { position:absolute; left:255px; top:15px; width:210px; height:410px; border:2px solid var(--line); border-radius:28px; background:var(--panel); box-shadow:0 14px 40px rgba(0,0,0,.35); overflow:hidden; }
+  .notch { position:absolute; left:50%; top:6px; width:56px; height:6px; margin-left:-28px; border-radius:99px; background:var(--line); z-index:5; }
+  .screen { position:absolute; left:0; right:0; top:22px; bottom:44px; }
+  .scr { position:absolute; inset:0; padding:12px 14px; opacity:0; transition:opacity .4s; pointer-events:none; }
+  .scr.on { opacity:1; }
+  .phh { font-weight:800; font-size:17px; margin-bottom:10px; }
+  .sbar { border:1px solid var(--line); background:var(--bg); border-radius:10px; padding:8px 11px; font-size:13px; color:var(--muted); display:flex; gap:6px; align-items:center; }
+  .sbar span { color:var(--ink); }
+  .hint { margin-top:90px; text-align:center; color:var(--muted); font-size:12.5px; }
+  .tabs { position:absolute; left:0; right:0; bottom:0; height:44px; display:flex; justify-content:space-around; align-items:center; border-top:1px solid var(--line); background:var(--bg2); font-size:10.5px; color:var(--muted); }
+  .tabs .scanb { width:36px; height:36px; margin-top:-14px; border-radius:50%; background:var(--accent); color:#062622; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; }
+  .tabs .act { color:var(--accent); font-weight:700; }
+  #cam { background:#091113; }
+  .vf { position:absolute; left:28px; right:28px; top:70px; height:150px; border-radius:10px; }
+  .vf .br { position:absolute; width:22px; height:22px; border:3px solid #fff; transition:border-color .3s; }
+  .vf .tl { left:0; top:0; border-right:0; border-bottom:0; } .vf .tr2 { right:0; top:0; border-left:0; border-bottom:0; }
+  .vf .bl { left:0; bottom:0; border-right:0; border-top:0; } .vf .brr { right:0; bottom:0; border-left:0; border-top:0; }
+  .vf.hit .br { border-color:var(--accent); }
+  .camt { position:absolute; left:0; right:0; top:240px; text-align:center; font-size:12px; color:#9fb9b6; }
+  .ln { display:flex; justify-content:space-between; font-size:12.5px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .tot { display:flex; justify-content:space-between; font-weight:800; margin:10px 0; font-size:14px; }
+  .res1 b { white-space:nowrap; }
+  .res1 { display:flex; justify-content:space-between; align-items:center; border:1px solid var(--line); background:var(--bg); border-radius:10px; padding:9px 11px; margin-top:8px; font-size:12.5px; }
+  .res1.best { border-color:var(--accent); background:var(--glow); }
+  .tg { font-size:10px; padding:1px 7px; border-radius:99px; border:1px solid var(--accent); color:var(--accent); margin-left:6px; }
+  .added { position:absolute; left:14px; right:14px; bottom:10px; background:var(--accent); color:#062622; font-weight:700; text-align:center; border-radius:10px; padding:9px; font-size:12.5px; }
 
-  .diag { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
-  .box { padding:10px 16px; border:1px solid var(--line); background:var(--panel); border-radius:10px; font-size:14px; text-align:center; }
-  .box small { display:block; color:var(--muted); font-size:12px; }
-  .box.hi { border-color:var(--accent); color:var(--accent); background:var(--glow); }
-  .outs { display:grid; gap:10px; }
-  .noteCard { text-align:left; min-width:190px; }
-  .noteCard div { font-size:13px; color:var(--muted); padding:2px 0; }
+  /* dashboard */
+  .kp { border:1px solid var(--line); background:var(--bg); border-radius:10px; padding:9px 12px; }
+  .kp small { display:block; color:var(--muted); font-size:11px; }
+  .kp b { font-size:22px; letter-spacing:-.02em; }
+  .cd { border:1px solid var(--line); background:var(--bg); border-radius:10px; padding:10px 12px; }
+  .cd h6 { margin:0 0 8px; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .seg { fill:none; stroke-width:14; transition:stroke-dasharray 1s ease, stroke-dashoffset 1s ease; }
+  .vb { display:flex; align-items:flex-end; gap:10px; height:96px; }
+  .vb div { flex:1; background:var(--accent); border-radius:4px 4px 0 0; height:0; transition:height 1s ease; }
+  .vl { display:flex; gap:10px; font-size:10px; color:var(--muted); margin-top:5px; }
+  .vl span { flex:1; text-align:center; }
+  .ag { display:grid; grid-template-columns:60px 1fr 36px; gap:8px; align-items:center; margin:9px 0; font-size:12px; padding:2px 4px; border-radius:6px; }
+  .ag.hot { background:var(--glow); outline:1px solid var(--accent); }
+  .ag .bar i { transition:width 1s ease; }
+  .slc { border:1px solid var(--line); background:var(--bg); border-radius:8px; padding:6px 12px; font-size:12.5px; }
+  .dd { position:absolute; background:var(--panel); border:1px solid var(--line); border-radius:8px; box-shadow:0 10px 24px rgba(0,0,0,.35); z-index:20; overflow:hidden; }
+  .dd div { padding:7px 14px; font-size:12.5px; }
+  .dd div.hv { background:var(--glow); color:var(--accent); }
+  .tip { position:absolute; z-index:25; background:var(--panel); border:1px solid var(--accent); border-radius:8px; padding:7px 11px; font-size:12px; box-shadow:0 8px 20px rgba(0,0,0,.35); }
+  .page { position:absolute; left:130px; top:30px; width:420px; height:380px; z-index:30; background:var(--panel); border:1px solid var(--accent); border-radius:12px; box-shadow:0 18px 50px rgba(0,0,0,.5); padding:18px 20px; }
+  .page h5 { margin:0 0 12px; font-size:15px; }
+  .shimmer { height:10px; border-radius:99px; background:linear-gradient(90deg,var(--line),var(--accent2),var(--line)); background-size:200% 100%; animation:shm 1.1s linear infinite; }
+  @keyframes shm { from { background-position:200% 0; } to { background-position:-200% 0; } }
+
+  /* orquestração */
+  .term { background:#0a1214; color:#cfe9e5; font-family:"JetBrains Mono",monospace; font-size:12px; line-height:1.55; padding:12px 14px; height:calc(100% - 30px); overflow:hidden; }
+  .term .d { color:#6f8f8b; } .term .g { color:#3dd6c3; } .term .y { color:#e6c870; } .term .p { color:#8fb6ff; }
+  .nl { font-size:12.5px; padding:2px 0; color:var(--muted); }
+  .nl b { color:var(--ink); }
+  .nl.new { color:var(--accent); font-weight:700; }
+  .node2 { position:absolute; padding:8px 14px; border:1px solid var(--line); background:var(--bg); border-radius:10px; font-size:12.5px; text-align:center; transition:border-color .3s, background .3s, box-shadow .3s; }
+  .node2 small { display:block; color:var(--muted); font-size:10.5px; }
+  .node2.lit { border-color:var(--accent); background:var(--glow); box-shadow:0 0 18px var(--glow); }
+  .lbl2 { position:absolute; font-size:10.5px; padding:1px 8px; border-radius:99px; border:1px solid var(--accent); color:var(--accent); background:var(--bg); }
 
   /* about */
   .about { display:grid; grid-template-columns:1.2fr 1fr; gap:48px; margin-top:34px; }
@@ -159,14 +221,11 @@
     .link { margin-left:0; width:100%; }
     .hero { padding-top:64px; }
     .face { padding:20px; }
-    .row { grid-template-columns:90px 1fr 20px; }
+    .face.back { align-self:center; aspect-ratio:720/440; padding:0; }
   }
   @media (prefers-reduced-motion:reduce) {
     .flipper { transition:none; }
-    .pop { opacity:1; transform:none; animation:none; }
-    .track i, .stack3 i { width:var(--w); animation:none; }
-    .ok { opacity:1; animation:none; }
-    .scanline { animation:none; top:50%; }
+    .caret::after, .shimmer { animation:none; }
   }
 </style>
 </head>
@@ -371,131 +430,307 @@ document.getElementById('copiar').addEventListener('click', function () {
   else { prompt('Copie o e-mail:', e); }
 });
 
-/* ---------- Mini demos (animações ilustrativas, com dados de exemplo) ---------- */
-function qrCells() {
-  var s = 7, out = '';
-  for (var i = 0; i < 121; i++) {
-    var r = Math.floor(i / 11), c = i % 11, on;
-    var corner = (r < 3 && c < 3) || (r < 3 && c > 7) || (r > 7 && c < 3);
-    if (corner) on = true;
-    else { s = (s * 1103515245 + 12345) & 0x7fffffff; on = (s >> 8) % 2 === 0; }
-    out += '<b class="' + (on ? '' : 'o') + '"></b>';
-  }
-  return out;
+/* =========================================================
+   Vídeos: pequenas "histórias" animadas (interface simulada,
+   mouse e dados de exemplo). Cada demo roda em loop enquanto
+   o card está virado.
+   ========================================================= */
+var STOP = {};
+var CURSOR = '<div class="cur"><svg viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg><span class="dot"></span></div>';
+function show(el, on) { el.classList.toggle('off', on === false); }
+
+function mkRun(c) {
+  var run = { dead: false, sc: 1 };
+  var cur = function () { return c.querySelector('.cur'); };
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  var w = async function (ms) { await sleep(ms); if (run.dead) throw STOP; };
+  run.w = w;
+  var pos = function (t, fx, fy) {
+    var r = t.getBoundingClientRect(), cr = c.getBoundingClientRect();
+    return [(r.left - cr.left + r.width * fx) / run.sc, (r.top - cr.top + r.height * fy) / run.sc];
+  };
+  run.pos = pos;
+  run.move = async function (t, ms, fx, fy) {
+    var p = pos(t, fx == null ? .5 : fx, fy == null ? .5 : fy);
+    cur().style.setProperty('--t', (ms || 800) + 'ms');
+    cur().style.transform = 'translate(' + p[0] + 'px,' + p[1] + 'px)';
+    await w((ms || 800) + 60);
+  };
+  run.ripple = function () {
+    var m = /translate\(([-\d.]+)px,\s*([-\d.]+)px\)/.exec(cur().style.transform || '');
+    if (!m) return;
+    var r = document.createElement('span'); r.className = 'rip'; r.style.left = m[1] + 'px'; r.style.top = m[2] + 'px';
+    c.appendChild(r); setTimeout(function () { r.remove(); }, 700);
+  };
+  run.click = async function (t, fx, fy) {
+    await run.move(t, 750, fx, fy);
+    cur().classList.add('press'); run.ripple(); await w(150); cur().classList.remove('press'); await w(150);
+  };
+  run.grab = async function (t, label) {
+    await run.move(t, 850, .35, .5);
+    cur().classList.add('press'); await w(160);
+    var g = document.createElement('div'); g.className = 'ghost'; g.textContent = label; cur().appendChild(g);
+  };
+  run.drop = async function () {
+    cur().classList.remove('press'); var g = cur().querySelector('.ghost'); if (g) g.remove(); await w(250);
+  };
+  run.type = async function (el, text, ms) { for (var i = 0; i < text.length; i++) { el.textContent += text[i]; await w(ms || 70); } };
+  run.count = async function (el, to, ms, suf) {
+    var from = parseFloat(el.dataset.v || 0), t0 = performance.now(); el.dataset.v = to;
+    for (;;) { var p = Math.min(1, (performance.now() - t0) / ms); el.textContent = Math.round(from + (to - from) * p) + (suf || ''); if (p >= 1) break; await w(40); }
+  };
+  run.fly = async function (a, b, ms) {
+    var pa = pos(a, .5, .5), pb = pos(b, .5, .5), d = document.createElement('span');
+    d.className = 'pk'; d.style.left = pa[0] + 'px'; d.style.top = pa[1] + 'px'; d.style.setProperty('--t', ms + 'ms'); c.appendChild(d);
+    await sleep(30); d.style.left = pb[0] + 'px'; d.style.top = pb[1] + 'px'; await w(ms + 80); d.remove();
+  };
+  return run;
 }
 
-var DEMOS = {
-  descorruptor: {
-    title: 'Descorruptor de Banco de Dados', win: 'recuperador · no navegador',
-    steps: [
-      { cap: '1. Você solta a pasta do banco (ou um .zip)', html:
-        '<div class="col"><div class="dz pop">Solte aqui a pasta <b>data</b> do MySQL ou um <b>.zip</b></div>' +
-        '<div style="text-align:center" class="mono"><span class="file pop" style="--d:.4s">ibdata1</span><span class="file pop" style="--d:.7s">clientes.ibd</span><span class="file pop" style="--d:1s">produtos.ibd</span></div></div>' },
-      { cap: '2. Ele recupera as tabelas, direto no seu navegador', html:
-        '<div class="col">' +
-        ['clientes', 'produtos', 'notas_fiscais'].map(function (n, i) {
-          return '<div class="row"><span class="mono">' + n + '</span><div class="track"><i style="--w:100%;--d:' + (i * .45) + 's"></i></div><span class="ok" style="--d:' + (i * .45) + 's">✓</span></div>';
-        }).join('') + '</div>' },
-      { cap: '3. Você recebe o banco recuperado em .sql', html:
-        '<div class="col"><div class="sqlfile pop"><span style="font-size:24px">📄</span><div><b class="mono">banco_recuperado.sql</b><div style="color:var(--muted);font-size:13px">pronto para importar no MySQL</div></div></div>' +
-        '<div class="lock pop" style="--d:.5s">🔒 Os arquivos ficam no seu computador. Nada é enviado para a internet.</div></div>' }
-    ]
+/* ---------- 01 Descorruptor ---------- */
+var DEMO_DESC = {
+  html: function () {
+    var rows = ['clientes', 'produtos', 'notas_fiscais', 'itens_nota'].map(function (n) {
+      return '<div class="tr"><span class="mono">' + n + '</span><div class="bar"><i></i></div><span class="st">na fila</span></div>';
+    }).join('');
+    return '' +
+    '<div class="win" style="left:18px;top:70px;width:224px;height:290px"><div class="wbar"><i></i><i></i><i></i><span class="wt">mysql</span></div>' +
+      '<div style="padding:8px"><div class="fi">📁 bin</div><div class="fi" id="fdata">📁 data</div><div class="fi">📄 my.ini</div><div class="fi">📦 backup.zip</div></div></div>' +
+    '<div class="win" style="left:264px;top:24px;width:440px;height:392px"><div class="wbar"><i></i><i></i><i></i><span class="wt">Recuperador MySQL InnoDB</span></div>' +
+      '<div style="position:relative;padding:16px;height:330px">' +
+        '<div id="s1" class="x"><div id="dz" class="dz2"><div id="dzt">Solte aqui a pasta <b>data</b> do MySQL ou um <b>.zip</b></div></div>' +
+          '<div id="form" class="x off" style="margin-top:16px"><label class="lb">Nome do banco</label><div class="inp" id="inp"><span id="inpv"></span><span class="caret"></span></div><div style="margin-top:14px"><span class="btn2" id="go">Recuperar</span></div></div></div>' +
+        '<div id="s2" class="x off" style="position:absolute;left:16px;right:16px;top:14px"><div class="lb">Recuperando tabelas…</div>' + rows +
+          '<div class="pc"><span>Progresso geral</span><b id="pct">0%</b></div><div class="bar" id="all"><i></i></div></div>' +
+        '<div id="s3" class="x off" style="position:absolute;left:16px;right:16px;top:14px"><div class="okb">✓ Recuperação concluída</div>' +
+          '<div class="sqlf"><span style="font-size:26px">📄</span><div><b class="mono">loja_cliente.sql</b><small>4 tabelas recuperadas</small></div></div><span class="btn2" id="dl">Baixar .sql</span></div>' +
+        '<div id="toast" class="toast x off">✓ Salvo em Downloads</div>' +
+      '</div><div class="foot">🔒 Seus arquivos ficam neste computador e não são enviados para a internet</div></div>' + CURSOR;
   },
-  quanto: {
-    title: 'App "Quanto Tá?"', win: 'Quanto Tá? · app mobile',
-    steps: [
-      { cap: '1. Você escaneia o QR Code da nota fiscal', html:
-        '<div class="phone"><div class="mono" style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:8px">Escanear nota</div><div class="qr">' + qrCells() + '<div class="scanline"></div></div></div>' },
-      { cap: '2. O app lê os produtos e os preços da nota', html:
-        '<div class="phone"><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:6px">Nota lida · exemplo</div>' +
-        [['Arroz 5 kg', '24,90'], ['Feijão 1 kg', '8,49'], ['Leite 1 L', '5,19'], ['Café 500 g', '18,75']].map(function (p, i) {
-          return '<div class="item pop" style="--d:' + (i * .35) + 's"><span>' + p[0] + '</span><b>R$ ' + p[1] + '</b></div>';
-        }).join('') + '</div>' },
-      { cap: '3. E compara o preço do mesmo produto entre mercados', html:
-        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:4px">Arroz 5 kg · exemplo</div>' +
-        '<div class="mk"><span>Mercado A</span><div class="track"><i style="--w:100%;--d:0s"></i></div><b>R$ 26,90</b></div>' +
-        '<div class="mk"><span>Mercado B</span><div class="track"><i style="--w:93%;--d:.2s"></i></div><b>R$ 24,90</b></div>' +
-        '<div class="mk best"><span>Mercado C</span><div class="track"><i style="--w:84%;--d:.4s"></i></div><b>R$ 22,50</b></div>' +
-        '<div class="pop" style="--d:1.2s;text-align:right"><span class="badge">menor preço: Mercado C</span></div></div>' }
-    ]
-  },
-  dashboard: {
-    title: 'Dashboard de gestão do suporte', win: 'Power BI · gestão do suporte',
-    steps: [
-      { cap: '1. Reúne os atendimentos num só lugar', html:
-        '<div class="col">' + [['Emissão de nota', 'satisfeito'], ['Erro no banco de dados', 'satisfeito'], ['Dúvida de configuração', 'não respondido'], ['Impressora fiscal', 'insatisfeito']].map(function (t, i) {
-          return '<div class="tk pop" style="--d:' + (i * .35) + 's"><span>' + t[0] + '</span><em>' + t[1] + '</em></div>';
-        }).join('') + '</div>' },
-      { cap: '2. Calcula a satisfação e o assunto dos tickets', html:
-        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:10px">Pesquisa de satisfação · exemplo</div>' +
-        '<div class="stack3"><i style="--w:62%;background:var(--accent)"></i><i style="--w:14%;--d:.5s;background:var(--warn)"></i><i style="--w:24%;--d:.9s;background:var(--muted)"></i></div>' +
-        '<div class="legend"><span><s style="background:var(--accent)"></s>Satisfeito</span><span><s style="background:var(--warn)"></s>Insatisfeito</span><span><s style="background:var(--muted)"></s>Não respondido</span></div></div>' },
-      { cap: '3. Acompanha a meta de cada agente', html:
-        '<div class="col"><div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:4px">Metas dos agentes · exemplo</div>' +
-        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 1</span><div class="track"><i style="--w:96%"></i></div><b>96%</b></div>' +
-        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 2</span><div class="track"><i style="--w:74%;--d:.3s"></i></div><b>74%</b></div>' +
-        '<div class="mk" style="grid-template-columns:80px 1fr 40px"><span>Agente 3</span><div class="track"><i style="--w:45%;--d:.6s"></i></div><b>45%</b></div>' +
-        '<div class="pop" style="--d:1.3s"><span class="badge" style="margin-left:0">Agente 1 está perto da meta</span></div></div>' }
-    ]
-  },
-  orquestracao: {
-    title: 'Orquestração de IA', win: 'Claude Code · hooks e subagentes',
-    steps: [
-      { cap: '1. Começa a sessão: o hook carrega o contexto do Obsidian', html:
-        '<div class="diag"><div class="box noteCard pop"><b class="mono" style="font-size:13px">📓 Obsidian · retomada.md</b><div>Onde paramos</div><div>Decisões do projeto</div><div>Próximo passo</div></div>' +
-        '<span class="arrow pop" style="--d:.5s">→</span><div class="box hi pop" style="--d:.7s">Claude Code<small>retoma de onde parou</small></div></div>' },
-      { cap: '2. Chega uma tarefa e o Laya (modelo local) decide quem faz', html:
-        '<div class="diag"><div class="box pop">Tarefa<small>ex.: resumir um log longo</small></div><span class="arrow pop" style="--d:.4s">→</span>' +
-        '<div class="box hi pop" style="--d:.6s">Laya<small>roda na minha GPU</small></div><span class="arrow pop" style="--d:1s">→</span>' +
-        '<div class="outs"><div class="box pop" style="--d:1.2s;border-color:var(--accent)">Gemini<small>tarefa simples: mais barato</small></div><div class="box pop" style="--d:1.5s">Claude<small>tarefa difícil: modelo forte</small></div></div></div>' },
-      { cap: '3. O modelo certo responde: menos tokens, mesmo resultado', html:
-        '<div class="diag"><div class="box pop">Tarefa simples<small>→ Gemini</small></div><div class="box pop" style="--d:.4s">Tarefa difícil<small>→ Claude</small></div>' +
-        '<span class="arrow pop" style="--d:.9s">→</span><div class="box hi pop" style="--d:1s">Decisões salvas<small>no cofre do Obsidian</small></div></div>' }
-    ]
+  go: async function (c, run) {
+    var q = function (s) { return c.querySelector(s); };
+    await run.w(900);
+    await run.move(q('#fdata'), 1100, .3, .5);
+    q('#fdata').classList.add('sel'); await run.w(400);
+    await run.grab(q('#fdata'), '📁 data'); q('#fdata').classList.add('drag');
+    setTimeout(function () { q('#dz').classList.add('over'); }, 800);
+    await run.move(q('#dz'), 1400);
+    await run.drop(); q('#fdata').classList.remove('drag');
+    q('#dz').classList.remove('over'); q('#dz').classList.add('ok'); q('#dzt').innerHTML = '✅ <b>data</b> carregada · 4 tabelas encontradas';
+    show(q('#form')); await run.w(900);
+    await run.click(q('#inp')); await run.type(q('#inpv'), 'loja_cliente', 85); await run.w(400);
+    await run.click(q('#go'));
+    show(q('#s1'), false); await run.w(300); show(q('#s2'));
+    var rows = c.querySelectorAll('.tr'), n = 0;
+    await run.w(500);
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i]; r.querySelector('.st').textContent = 'recuperando…';
+      r.querySelector('.bar i').style.width = '100%'; await run.w(1000);
+      r.querySelector('.st').textContent = '✓ pronto'; r.classList.add('done'); n++;
+      q('#all i').style.width = (n / rows.length * 100) + '%'; q('#pct').textContent = (n / rows.length * 100) + '%'; await run.w(250);
+    }
+    await run.w(500); show(q('#s2'), false); await run.w(400); show(q('#s3')); await run.w(1000);
+    await run.click(q('#dl')); show(q('#toast')); await run.w(2800);
   }
 };
+
+/* ---------- 02 Quanto Tá? ---------- */
+function qrSmall() {
+  var s = 11, o = '';
+  for (var i = 0; i < 121; i++) {
+    var r = Math.floor(i / 11), k = i % 11, on;
+    if ((r < 3 && k < 3) || (r < 3 && k > 7) || (r > 7 && k < 3)) on = true;
+    else { s = (s * 1103515245 + 12345) & 0x7fffffff; on = (s >> 8) % 2 === 0; }
+    o += '<b class="' + (on ? '' : 'o') + '"></b>';
+  }
+  return o;
+}
+var DEMO_QUANTO = {
+  html: function () {
+    return '' +
+    '<div class="rcp" id="rcp"><b>MERCADO A</b><br>CNPJ 00.000.000/0001-00<hr>' +
+      'ARROZ 5KG ... 24,90<br>FEIJAO 1KG .. 8,49<br>LEITE 1L .... 5,19<br>CAFE 500G ... 18,75<hr><b>TOTAL ..... 57,33</b><div class="q">' + qrSmall() + '</div></div>' +
+    '<div class="phone2"><div class="notch"></div><div class="screen">' +
+      '<div class="scr on" id="home"><div class="phh">Quanto Tá?</div><div class="sbar">🔍 Buscar produto…</div><div class="hint">Toque em ◉ para escanear<br>a nota fiscal</div></div>' +
+      '<div class="scr" id="cam"><div class="vf" id="qrbox"><b class="br tl"></b><b class="br tr2"></b><b class="br bl"></b><b class="br brr"></b></div><div class="camt">Aponte para o QR Code da nota</div></div>' +
+      '<div class="scr" id="read"><div class="phh">Nota lida ✓</div><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px">Mercado A</div>' +
+        '<div class="ln x off"><span>Arroz 5 kg</span><b>R$ 24,90</b></div><div class="ln x off"><span>Feijão 1 kg</span><b>R$ 8,49</b></div><div class="ln x off"><span>Leite 1 L</span><b>R$ 5,19</b></div><div class="ln x off"><span>Café 500 g</span><b>R$ 18,75</b></div>' +
+        '<div class="tot x off"><span>Total</span><span>R$ 57,33</span></div><span class="btn2 x off" id="save" style="display:block;text-align:center">Salvar preços</span></div>' +
+      '<div class="scr" id="search"><div class="sbar" id="sq">🔍 <span id="sqv"></span><span class="caret"></span></div>' +
+        '<div class="res1 x off"><span>Mercado B</span><b>R$ 26,90</b></div><div class="res1 x off"><span>Mercado A</span><b>R$ 24,90</b></div>' +
+        '<div class="res1 best x off" id="best"><span>Mercado C <i class="tg" style="font-style:normal">menor preço</i></span><b>R$ 22,50</b></div>' +
+        '<div class="added x off" id="added">✓ Arroz 5 kg adicionado à lista</div></div>' +
+    '</div><div class="tabs"><span id="tbusca">Busca</span><span>Lista</span><span class="scanb" id="scan">◉</span><span>Pratos</span><span>Notas</span></div></div>' + CURSOR;
+  },
+  go: async function (c, run) {
+    var q = function (s) { return c.querySelector(s); };
+    var scr = function (id) { c.querySelectorAll('.scr').forEach(function (s) { s.classList.toggle('on', s.id === id); }); };
+    c.querySelector('.cur').classList.add('touch');
+    await run.w(900);
+    await run.click(q('#scan')); scr('cam'); await run.w(800);
+    q('#rcp').classList.add('go'); await run.w(1900);
+    q('#qrbox').classList.add('hit'); await run.w(1100);
+    scr('read'); q('#rcp').classList.add('away'); await run.w(500);
+    var ls = c.querySelectorAll('#read .x');
+    for (var i = 0; i < ls.length - 1; i++) { show(ls[i]); await run.w(550); }
+    await run.w(300); show(ls[ls.length - 1]); await run.w(500);
+    await run.click(q('#save')); await run.w(500);
+    scr('search'); q('#tbusca').classList.add('act'); await run.w(700);
+    await run.click(q('#sq')); await run.type(q('#sqv'), 'arroz', 130); await run.w(400);
+    var rs = c.querySelectorAll('#search .res1');
+    for (var j = 0; j < rs.length; j++) { show(rs[j]); await run.w(450); }
+    await run.w(700); await run.click(q('#best')); show(q('#added')); await run.w(3000);
+  }
+};
+
+/* ---------- 03 Dashboard ---------- */
+var DASH_DATA = {
+  mes: { t: 128, s: 72, seg: [72, 12, 16], b: [82, 58, 44, 26], a: [96, 74, 88, 52] },
+  sem: { t: 34, s: 84, seg: [84, 6, 10], b: [60, 72, 30, 40], a: [100, 82, 90, 60] }
+};
+var DEMO_DASH = {
+  html: function () {
+    var ags = ['Agente 1', 'Agente 2', 'Agente 3', 'Agente 4'].map(function (n, i) {
+      return '<div class="ag" id="ag' + (i + 1) + '"><span>' + n + '</span><div class="bar"><i></i></div><b>0%</b></div>';
+    }).join('');
+    return '' +
+    '<div class="win" style="left:18px;top:14px;width:684px;height:412px"><div class="wbar"><i></i><i></i><i></i><span class="wt">Gestão do suporte · Power BI</span></div>' +
+      '<div style="position:absolute;left:14px;right:14px;top:42px;height:30px;display:flex;align-items:center;gap:10px"><span style="color:var(--muted);font-size:12px">Período</span><span class="slc" id="slc">Mês ▾</span><span style="flex:1"></span><span class="btn2" id="rep" style="padding:6px 14px;font-size:12.5px">Gerar relatório</span></div>' +
+      '<div id="imp" class="x" style="position:absolute;left:14px;right:14px;top:96px"><div style="font-size:12px;color:var(--muted);margin-bottom:8px">Importando atendimentos…</div><div class="shimmer"></div></div>' +
+      '<div id="body" class="x off" style="position:absolute;left:14px;right:14px;top:84px">' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"><div class="kp"><small>Tickets</small><b id="k1" data-v="0">0</b></div><div class="kp"><small>Satisfação</small><b id="k2" data-v="0">0%</b></div><div class="kp"><small>Agentes na meta</small><b id="k3">–</b></div></div>' +
+        '<div style="display:grid;grid-template-columns:170px 1fr 200px;gap:10px;margin-top:10px">' +
+          '<div class="cd"><h6>Satisfação</h6><svg viewBox="0 0 100 100" width="130" height="130" style="display:block;margin:0 auto;transform:rotate(-90deg)"><circle class="seg" id="g1" cx="50" cy="50" r="36" stroke="var(--accent)"/><circle class="seg" id="g2" cx="50" cy="50" r="36" stroke="var(--warn)"/><circle class="seg" id="g3" cx="50" cy="50" r="36" stroke="var(--muted)"/></svg><div style="display:flex;justify-content:center;gap:8px;font-size:10px;color:var(--muted);margin-top:6px"><span style="color:var(--accent)">● satisf.</span><span style="color:var(--warn)">● insat.</span><span>● s/ resp.</span></div></div>' +
+          '<div class="cd"><h6>Assunto dos tickets</h6><div class="vb"><div id="b1"></div><div id="b2"></div><div id="b3"></div><div id="b4"></div></div><div class="vl"><span>Fiscal</span><span>Banco</span><span>Impres.</span><span>Config.</span></div></div>' +
+          '<div class="cd"><h6>Meta dos agentes</h6>' + ags + '</div>' +
+        '</div></div>' +
+      '<div id="dd" class="dd x off" style="left:84px;top:96px"><div>Semana</div><div id="o2">Mês</div></div>' +
+      '<div id="tip" class="tip x off" style="left:520px;top:300px">Agente 2 · meta 80% · está perto da meta</div>' +
+      '<div id="page" class="page x off"><h5>Relatório para a gestão</h5><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="kp"><small>Tickets</small><b>34</b></div><div class="kp"><small>Satisfação</small><b>84%</b></div><div class="kp"><small>Na meta</small><b>3/4</b></div></div>' +
+        '<div class="cd" style="margin-top:12px"><h6>Assunto dos tickets</h6><div class="vb"><div style="height:60%"></div><div style="height:72%"></div><div style="height:30%"></div><div style="height:40%"></div></div></div><div class="okb" style="margin-top:14px">✓ Relatório pronto para a alta gestão</div></div>' +
+    '</div>' + CURSOR;
+  },
+  go: async function (c, run) {
+    var q = function (s) { return c.querySelector(s); };
+    var C = 226.2;
+    function apply(d, ms) {
+      var off = 0;
+      d.seg.forEach(function (v, i) { var a = C * v / 100, e = q('#g' + (i + 1)); e.style.strokeDasharray = a + ' ' + (C - a); e.style.strokeDashoffset = -off; off += a; });
+      d.b.forEach(function (v, i) { q('#b' + (i + 1)).style.height = v + '%'; });
+      var met = 0;
+      d.a.forEach(function (v, i) { var r = q('#ag' + (i + 1)); r.querySelector('.bar i').style.width = Math.min(v, 100) + '%'; r.querySelector('b').textContent = v + '%'; if (v >= 80) met++; });
+      q('#k3').textContent = met + '/4';
+      return Promise.all([run.count(q('#k1'), d.t, ms), run.count(q('#k2'), d.s, ms, '%')]);
+    }
+    ['#g1', '#g2', '#g3'].forEach(function (s) { q(s).style.strokeDasharray = '0 ' + C; });
+    await run.w(700); await run.w(1600);
+    show(q('#imp'), false); await run.w(300); show(q('#body'));
+    await run.w(400); await apply(DASH_DATA.mes, 1100); await run.w(900);
+    await run.move(q('#ag2'), 1100, .5, .5); q('#ag2').classList.add('hot'); show(q('#tip')); await run.w(2300);
+    show(q('#tip'), false); q('#ag2').classList.remove('hot'); await run.w(400);
+    await run.click(q('#slc')); show(q('#dd')); await run.w(500);
+    await run.move(q('#dd').children[0], 600); q('#dd').children[0].classList.add('hv'); await run.w(500);
+    await run.click(q('#dd').children[0]); show(q('#dd'), false); q('#slc').textContent = 'Semana ▾';
+    await apply(DASH_DATA.sem, 1100); await run.w(1800);
+    await run.click(q('#rep')); show(q('#page')); await run.w(3600);
+  }
+};
+
+/* ---------- 04 Orquestração ---------- */
+var DEMO_ORQ = {
+  html: function () {
+    return '' +
+    '<div class="win" style="left:16px;top:16px;width:340px;height:408px"><div class="wbar"><i></i><i></i><i></i><span class="wt">Claude Code · terminal</span></div><div class="term" id="term"></div></div>' +
+    '<div class="win" id="nt" style="left:372px;top:16px;width:332px;height:156px"><div class="wbar"><i></i><i></i><i></i><span class="wt">Obsidian · retomada.md</span></div>' +
+      '<div style="padding:10px 14px" id="nbody"><div class="nl"><b>## Onde paramos</b></div><div class="nl">- tela de login pronta</div><div class="nl"><b>## Próximo passo</b></div><div class="nl">- testar no celular</div></div></div>' +
+    '<div class="win" style="left:372px;top:186px;width:332px;height:238px"><div class="wbar"><i></i><i></i><i></i><span class="wt">Roteamento por custo</span></div>' +
+      '<div class="node2" id="nT" style="left:20px;top:44px">Tarefa</div>' +
+      '<div class="node2" id="nL" style="left:116px;top:36px;width:100px">Laya<small>modelo local · GPU</small></div>' +
+      '<div class="node2" id="nG" style="left:36px;top:128px;width:100px">Gemini<small>mais barato</small></div>' +
+      '<div class="node2" id="nC" style="left:196px;top:128px;width:100px">Claude<small>mais forte</small></div>' +
+      '<div class="lbl2 x off" id="lS" style="left:60px;top:100px">simples</div><div class="lbl2 x off" id="lD" style="left:222px;top:100px">difícil</div>' +
+      '<div style="position:absolute;left:20px;right:20px;bottom:14px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px"><span>Tokens do modelo caro</span><span id="tk">0</span></div><div class="bar"><i id="tkb"></i></div></div></div>' + CURSOR;
+  },
+  go: async function (c, run) {
+    var q = function (s) { return c.querySelector(s); };
+    c.querySelector('.cur').classList.add('none');
+    var term = q('#term');
+    function line(html) { var d = document.createElement('div'); d.innerHTML = html; term.appendChild(d); return d; }
+    async function typed(prefix, text, ms) { var d = line(prefix + '<span class="t"></span><span class="caret"></span>'); await run.type(d.querySelector('.t'), text, ms || 55); await run.w(350); d.querySelector('.caret').remove(); }
+    await run.w(800);
+    await typed('<span class="g">$</span> ', 'claude', 80); await run.w(300);
+    line('<span class="d">▸ hook SessionStart</span>'); await run.w(500);
+    line('<span class="y">carregando retomada.md…</span>'); q('#nt').classList.add('lit');
+    q('#nt').style.borderColor = 'var(--accent)'; q('#nt').style.boxShadow = '0 0 22px var(--glow)';
+    await run.fly(q('#nbody'), term, 1300); await run.w(200);
+    line('<span class="g">✓ contexto carregado</span>'); line('<span class="d">  onde paramos: tela de login pronta</span>'); line('<span class="d">  próximo passo: testar no celular</span>');
+    q('#nt').style.borderColor = ''; q('#nt').style.boxShadow = ''; await run.w(1100);
+    line('&nbsp;');
+    await typed('<span class="p">&gt;</span> ', 'resuma este log de 500 linhas', 50);
+    line('<span class="d">▸ Laya analisando a tarefa…</span>'); q('#nL').classList.add('lit'); await run.fly(term, q('#nL'), 1000);
+    show(q('#lS')); await run.w(600); await run.fly(q('#nL'), q('#nG'), 1000); q('#nG').classList.add('lit'); await run.w(500);
+    line('<span class="g">✓ resumo pronto</span> <span class="d">(Gemini)</span>'); q('#tkb').style.width = '6%'; q('#tk').textContent = '+6%';
+    await run.fly(q('#nG'), term, 900); await run.w(900);
+    q('#nL').classList.remove('lit'); q('#nG').classList.remove('lit'); show(q('#lS'), false); line('&nbsp;');
+    await typed('<span class="p">&gt;</span> ', 'revise a segurança do banco', 50);
+    line('<span class="d">▸ Laya analisando a tarefa…</span>'); q('#nL').classList.add('lit'); await run.fly(term, q('#nL'), 1000);
+    show(q('#lD')); await run.w(600); await run.fly(q('#nL'), q('#nC'), 1000); q('#nC').classList.add('lit'); await run.w(500);
+    line('<span class="g">✓ revisão feita</span> <span class="d">(Claude)</span>'); q('#tkb').style.width = '22%'; q('#tk').textContent = '+22%';
+    await run.fly(q('#nC'), term, 900); await run.w(900);
+    q('#nL').classList.remove('lit'); q('#nC').classList.remove('lit'); show(q('#lD'), false); line('&nbsp;');
+    await typed('<span class="p">&gt;</span> ', '/save', 90);
+    line('<span class="y">salvando decisões no cofre…</span>'); await run.fly(term, q('#nbody'), 1300);
+    var nn = document.createElement('div'); nn.className = 'nl new'; nn.textContent = '✓ sessão salva'; q('#nbody').appendChild(nn);
+    q('#nt').style.borderColor = 'var(--accent)'; q('#nt').style.boxShadow = '0 0 22px var(--glow)';
+    line('<span class="g">✓ sessão salva</span>'); await run.w(3200);
+  }
+};
+
+var DEMOS = { descorruptor: DEMO_DESC, quanto: DEMO_QUANTO, dashboard: DEMO_DASH, orquestracao: DEMO_ORQ };
 
 function initFlip(el) {
   var demo = DEMOS[el.getAttribute('data-demo')];
   var front = el.querySelector('.front'), flipper = el.querySelector('.flipper');
   var back = document.createElement('div');
   back.className = 'face back';
-  back.innerHTML =
-    '<div class="backhead"><div><div class="lbl mono">Como funciona</div><h3>' + demo.title + '</h3></div>' +
-    '<button class="flipbtn" type="button" style="display:inline-flex">↩ Ver texto</button></div>' +
-    '<div class="stage"><div class="chrome"><i></i><i></i><i></i><span class="mono">' + demo.win + '</span></div><div class="scene"></div></div>' +
-    '<div class="capbar"><div class="cap"></div><div class="dots"></div></div>' +
-    '<p class="note">Animação ilustrativa, com dados de exemplo. Clique em qualquer lugar para voltar ao texto.</p>';
+  back.innerHTML = '<button class="flipbtn vbtn" type="button" style="display:inline-flex">↩ Ver texto</button><div class="vwrap"><div class="canvas"></div></div>';
   flipper.appendChild(back);
 
-  var scene = back.querySelector('.scene'), cap = back.querySelector('.cap'), dots = back.querySelector('.dots');
-  var DUR = 3600, idx = 0, timer = null;
+  var wrap = back.querySelector('.vwrap'), canvas = back.querySelector('.canvas');
+  var run = null, startT = null;
 
-  function show(i) {
-    idx = i;
-    scene.innerHTML = demo.steps[i].html;
-    cap.textContent = demo.steps[i].cap;
-    dots.innerHTML = '';
-    demo.steps.forEach(function (_, k) {
-      var d = document.createElement('button');
-      d.type = 'button'; d.setAttribute('aria-label', 'Passo ' + (k + 1));
-      d.className = k < i ? 'done' : (k === i ? 'on' : '');
-      d.style.setProperty('--dur', DUR + 'ms');
-      d.addEventListener('click', function (e) { e.stopPropagation(); play(k); });
-      dots.appendChild(d);
-    });
+  function fit() {
+    var w = wrap.clientWidth, h = wrap.clientHeight; if (!w || !h) return;
+    var sc = Math.min(w / 720, h / 440);
+    canvas.style.transform = 'translate(' + (w - 720 * sc) / 2 + 'px,' + (h - 440 * sc) / 2 + 'px) scale(' + sc + ')';
+    if (run) run.sc = sc;
   }
-  function play(i) { clearTimeout(timer); show(i); timer = setTimeout(function () { play((idx + 1) % demo.steps.length); }, DUR); }
-  function stop() { clearTimeout(timer); }
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(wrap); else window.addEventListener('resize', fit);
+
+  async function loop(r) {
+    try {
+      while (!r.dead) {
+        canvas.classList.remove('vis'); canvas.innerHTML = demo.html(); fit(); r.sc = currentScale();
+        await r.w(80); canvas.classList.add('vis');
+        await demo.go(canvas, r);
+        await r.w(500); canvas.classList.remove('vis'); await r.w(600);
+      }
+    } catch (e) { if (e !== STOP) console.error(e); }
+  }
+  function currentScale() { var m = /scale\(([-\d.]+)\)/.exec(canvas.style.transform); return m ? parseFloat(m[1]) : 1; }
 
   function setFlipped(v) {
     el.classList.toggle('is-flipped', v);
     front.inert = v; back.inert = !v;
     front.setAttribute('aria-hidden', String(v)); back.setAttribute('aria-hidden', String(!v));
-    if (v) play(0); else stop();
+    clearTimeout(startT);
+    if (run) { run.dead = true; run = null; }
+    if (v) {
+      startT = setTimeout(function () { run = mkRun(canvas); fit(); run.sc = currentScale(); loop(run); }, 950);
+    } else { setTimeout(function () { if (!el.classList.contains('is-flipped')) { canvas.classList.remove('vis'); canvas.innerHTML = ''; } }, 900); }
   }
   front.querySelector('.flipbtn').addEventListener('click', function () { setFlipped(true); back.querySelector('.flipbtn').focus({ preventScroll: true }); });
-  back.addEventListener('click', function () { setFlipped(false); front.querySelector('.flipbtn').focus({ preventScroll: true }); });
+  back.querySelector('.flipbtn').addEventListener('click', function () { setFlipped(false); front.querySelector('.flipbtn').focus({ preventScroll: true }); });
   el.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('is-flipped')) setFlipped(false); });
   setFlipped(false);
 }
