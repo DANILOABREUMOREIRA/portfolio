@@ -120,7 +120,7 @@
     <h1>Construo ferramentas com <em>IA</em> para resolver problemas reais.</h1>
     <div class="cta">
       <a class="btn pri" href="#projetos">Ver projetos ↓</a>
-      <a class="btn" href="mailto:daniloabreumoreira@gmail.com">Enviar e-mail</a>
+      <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=daniloabreumoreira@gmail.com&su=Contato%20pelo%20portf%C3%B3lio" target="_blank" rel="noopener">Enviar e-mail</a>
       <a class="btn" href="https://github.com/DANILOABREUMOREIRA" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
@@ -242,7 +242,8 @@
     <div class="kicker mono">Contato</div>
     <h2 style="margin-top:8px">Vamos construir algo com IA?</h2>
     <div class="cta">
-      <a class="btn pri" href="mailto:daniloabreumoreira@gmail.com">daniloabreumoreira@gmail.com</a>
+      <a class="btn pri" href="https://mail.google.com/mail/?view=cm&fs=1&to=daniloabreumoreira@gmail.com&su=Contato%20pelo%20portf%C3%B3lio" target="_blank" rel="noopener">daniloabreumoreira@gmail.com</a>
+      <button class="btn" id="copiar" type="button" style="background:none;color:inherit;font:inherit;font-weight:600;font-size:15px;cursor:pointer">Copiar e-mail</button>
       <a class="btn" href="https://github.com/DANILOABREUMOREIRA" target="_blank" rel="noopener">github.com/DANILOABREUMOREIRA</a>
     </div>
   </div>
@@ -252,5 +253,14 @@
   <div class="wrap">© 2026 Danilo Abreu</div>
 </footer>
 
+<script>
+  // Copia o e-mail para quem não usa Gmail no navegador
+  document.getElementById('copiar').addEventListener('click', function () {
+    var b = this, e = 'daniloabreumoreira@gmail.com';
+    var ok = function () { b.textContent = 'Copiado!'; setTimeout(function () { b.textContent = 'Copiar e-mail'; }, 2000); };
+    if (navigator.clipboard) { navigator.clipboard.writeText(e).then(ok, function () { prompt('Copie o e-mail:', e); }); }
+    else { prompt('Copie o e-mail:', e); }
+  });
+</script>
 </body>
 </html>
